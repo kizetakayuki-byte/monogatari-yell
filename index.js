@@ -6,28 +6,28 @@ import { GoogleGenAI } from "@google/genai";
 
 // --- DOM Elements ---
 const views = {
-  upload: document.getElementById('upload-view')!,
-  character: document.getElementById('character-view')!,
-  result: document.getElementById('result-view')!,
+  upload: document.getElementById('upload-view'),
+  character: document.getElementById('character-view'),
+  result: document.getElementById('result-view'),
 };
-const novelInput = document.getElementById('novel-input') as HTMLTextAreaElement;
-const fileInput = document.getElementById('file-input') as HTMLInputElement;
-const fileNameSpan = document.getElementById('file-name')!;
-const toCharacterSelectBtn = document.getElementById('to-character-select-btn') as HTMLButtonElement;
-const characterGrid = document.getElementById('character-grid')!;
-const backToUploadBtn = document.getElementById('back-to-upload-btn') as HTMLButtonElement;
-const generateBtn = document.getElementById('generate-btn') as HTMLButtonElement;
-const loadingIndicator = document.getElementById('loading-indicator')!;
-const loadingText = document.getElementById('loading-text')!;
-const resultOutput = document.getElementById('result-output')!;
-const resultHeader = document.getElementById('result-header')!;
-const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
-const startOverBtn = document.getElementById('start-over-btn') as HTMLButtonElement;
+const novelInput = document.getElementById('novel-input');
+const fileInput = document.getElementById('file-input');
+const fileNameSpan = document.getElementById('file-name');
+const toCharacterSelectBtn = document.getElementById('to-character-select-btn');
+const characterGrid = document.getElementById('character-grid');
+const backToUploadBtn = document.getElementById('back-to-upload-btn');
+const generateBtn = document.getElementById('generate-btn');
+const loadingIndicator = document.getElementById('loading-indicator');
+const loadingText = document.getElementById('loading-text');
+const resultOutput = document.getElementById('result-output');
+const resultHeader = document.getElementById('result-header');
+const downloadBtn = document.getElementById('download-btn');
+const startOverBtn = document.getElementById('start-over-btn');
 
 
 // --- State ---
 let novelText = '';
-let selectedCharacterId: string | null = null;
+let selectedCharacterId = null;
 
 // --- Character Data & Prompts ---
 const characters = {
@@ -77,15 +77,15 @@ const SYSTEM_PROMPT = `あなたは、プロの書評家であり、同時に優
 const USER_PROMPT_PREFIX = `\n以上の設定になりきって、以下の小説を読んだファンとして、作者にファンレターを書いてください。\n\n# 小説本文\n`;
 
 // --- Gemini API Initialization ---
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 // --- Functions ---
 
 /**
  * Switch between views
- * @param {keyof typeof views} viewId - The ID of the view to show
+ * @param {string} viewId - The ID of the view to show
  */
-function setView(viewId: keyof typeof views) {
+function setView(viewId) {
   Object.values(views).forEach(view => view.classList.remove('active'));
   views[viewId].classList.add('active');
 }
@@ -101,12 +101,12 @@ function validateNovelInput() {
 /**
  * Handle file selection
  */
-function handleFileSelect(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0];
+function handleFileSelect(event) {
+  const file = event.target.files?.[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      novelInput.value = e.target?.result as string;
+      novelInput.value = e.target?.result;
       fileNameSpan.textContent = file.name;
       validateNovelInput();
     };
@@ -140,7 +140,7 @@ function populateCharacterGrid() {
  * @param {string} id - The ID of the selected character
  * @param {HTMLElement} cardElement - The clicked card element
  */
-function selectCharacter(id: string, cardElement: HTMLElement) {
+function selectCharacter(id, cardElement) {
   selectedCharacterId = id;
   document.querySelectorAll('.character-card').forEach(card => card.classList.remove('selected'));
   cardElement.classList.add('selected');
@@ -164,7 +164,7 @@ async function generateFanLetter() {
   startOverBtn.hidden = true;
   downloadBtn.hidden = true;
   
-  const selectedChar = characters[selectedCharacterId as keyof typeof characters];
+  const selectedChar = characters[selectedCharacterId];
   resultHeader.innerHTML = `
     <p>${selectedChar.name}からのファンレター</p>
   `;
@@ -199,7 +199,7 @@ async function generateFanLetter() {
  * Download the result as a text file
  */
 function downloadResult() {
-    const characterName = characters[selectedCharacterId as keyof typeof characters].name;
+    const characterName = characters[selectedCharacterId].name;
     const blob = new Blob([resultOutput.textContent || ''], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
