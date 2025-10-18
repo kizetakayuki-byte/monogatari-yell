@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>物語へのエール</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.sh/@google/genai@^0.14.0"
+        }
+      }
+    </script>
+    <script type="module" src="index.tsx"></script>
+  </head>
+  <body>
+    <main class="app-container">
+      <header class="app-header">
+        <h1>物語へのエール</h1>
+        <p class="subtitle">あなたの物語に、AIファンが熱い感想を送ります</p>
+      </header>
+
+      <!-- Step 1: Novel Upload -->
+      <section id="upload-view" class="view active">
+        <div class="card">
+          <h2>Step 1: 小説の本文を入力</h2>
+          <p>ファンレターを送ってほしい小説の本文を貼り付けるか、テキストファイルをアップロードしてください。</p>
+          <textarea id="novel-input" placeholder="ここに小説の本文を貼り付けてください..." rows="15" aria-label="小説の本文"></textarea>
+          <div class="file-upload-wrapper">
+            <label for="file-input" class="button button-secondary">テキストファイルをアップロード</label>
+            <input type="file" id="file-input" accept=".txt" hidden>
+            <span id="file-name">ファイルが選択されていません</span>
+          </div>
+          <button id="to-character-select-btn" class="button button-primary" disabled>ファンを選ぶ</button>
+        </div>
+      </section>
+
+      <!-- Step 2: Character Selection -->
+      <section id="character-view" class="view">
+        <div class="card">
+          <h2>Step 2: ファンを選ぶ</h2>
+          <p>どのファンから感想をもらいますか？</p>
+          <div id="character-grid" class="character-grid">
+            <!-- Character cards will be inserted here by JS -->
+          </div>
+          <div class="button-group">
+            <button id="back-to-upload-btn" class="button button-secondary">戻る</button>
+            <button id="generate-btn" class="button button-primary" disabled>この人からファンレターをもらう</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: Result -->
+      <section id="result-view" class="view">
+        <div class="card">
+          <div id="result-header">
+            <!-- Result header will be inserted here by JS -->
+          </div>
+          <div id="loading-indicator" class="loading-indicator" hidden>
+            <div class="spinner"></div>
+            <p id="loading-text">心を込めてファンレターを執筆中です...</p>
+          </div>
+          <div id="result-output" aria-live="polite"></div>
+          <div class="button-group">
+            <button id="download-btn" class="button button-secondary" hidden>テキストファイルで保存</button>
+            <button id="start-over-btn" class="button button-primary" hidden>もう一度試す</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </body>
+</html>
